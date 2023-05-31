@@ -25,7 +25,7 @@ https://dwd.api.proxy.bund.dev/v30/stationOverviewExtended?stationIds=N7075
 Es ist mir kein Echtzeit-Wetterdatenservice des DWD bekannt. Falls jemand darüber informiert ist,
 würde ich mich über entsprechende Informationen freuen. Jedoch sind Messdaten von ausgewählten
 DWD-Wetterstationen verfügbar. Auf der Website https://opendata.dwd.de können zum Beispiel auch
-ausgewählte Wetterdaten als CSV-Datei heruntergeladen werden, die stündlich aktualisiert werden.
+Wetterdaten als CSV-Datei heruntergeladen werden, die stündlich aktualisiert werden.
 Diese ausgewählten DWD-Wetterstationen sind auf der Stationskarte
 https://www.dwd.de/DE/fachnutzer/landwirtschaft/appl/stationskarte/_node.html verzeichnet.
 In der Nähe von Bitburg konnte ich die Station Olsdorf (ID 1964) finden. Laut MOSMIX-Stationskatalog
@@ -34,7 +34,7 @@ man muss nur wissen, wo sie zu finden sind ;-)
 
 Unter https://opendata.dwd.de/weather/weather_reports/poi/ könnt ihr dann beispielsweise nach der Datei
 K419 suchen und die Datei 'K419_-BEOB.csv' finden. Der Parameter "stationIdentifiers" ist in diesem
-Fall also 'K419_-BEOB.csv'. Zur Überprüfung könnt ihr die CSV-Datei über den folgenden Link aufrufen:
+Fall also 'K419_-BEOB' (ohne Extension '.csv'). Zur Überprüfung könnt ihr die CSV-Datei über den folgenden Link aufrufen:
 https://opendata.dwd.de/weather/weather_reports/poi/K419_-BEOB.csv
 
 */
