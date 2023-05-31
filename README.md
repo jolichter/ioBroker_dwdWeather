@@ -2,6 +2,10 @@
 
 ## DWD Wettervorhersage und stündliche Messdaten für [ioBroker](https://github.com/ioBroker)
 
+#### Dieser JavaScript lädt die Wetterdaten vom deutschen Wetterdienst über JSON- bzw. CSV-Links.
+
+![DWD-Logo](https://github.com/jolichter/ioBroker_dwdWeather/assets/1485851/298f1285-aee6-4f08-97b7-d5a3865177ae)
+
 #### Der JavaScript-Code in ioBroker verwendet einen JSON-Datensatz von der API des Deutschen Wetterdienstes https://dwd.api.bund.dev, um automatisch entsprechende Datenpunkte für eine Wettervorhersage zu erstellen. Ebenso können stündliche Messdaten (POI) über https://opendata.dwd.de (CSV-Datei) geladen werden und entsprechende Datenpunkte werden erstellt. Durch die regelmäßige Aktualisierung der Datenpunkte bleiben die Informationen stets auf dem neuesten Stand. Dies ermöglicht eine einfache Integration der Wetterdaten in Visualisierungen und Automatisierungen innerhalb von ioBroker.
 
 Folgende Funktionen und Optionen sind im Code enthalten:
