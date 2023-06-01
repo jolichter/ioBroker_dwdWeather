@@ -18,7 +18,7 @@ Folgende Funktionen und Optionen sind im Code enthalten:
 - Die Optionen enableForecast1 und enableForecast2 steuern das Aktualisieren der Datenpunkte für forecast1 und forecast2. Du kannst sie auf true setzen, um die entsprechenden Datenpunkte zu aktivieren.
 - Variable splitArrays steuert das Aufteilen von Array-Werten in separate Datenpunkte (nur forecast1 und forecast2). Bei Bedarf können Array-Werte auf diese Weise aufgeteilt werden.
 - Die Funktionen createStateIfNotExists() und setStateIfChanged() werden verwendet, um Datenpunkte zu erstellen und ihre Werte zu aktualisieren, wenn sich die Werte geändert haben.
-- Ungenutzten Datenpunkte (Stationen) können manuell über die ioBroker-Admin-Oberfläche gelöscht werden.
+- Ungenutzte Datenpunkte (Stationen) können manuell über die ioBroker-Admin-Oberfläche gelöscht werden.
 - Die Funktion convertToISODate() wird genutzt, um Linux-Zeitformate in das ISO-Datumformat zu konvertieren, insbesondere für die Werte "sunrise", "sunset", "moonrise" und "moonset".
 - Die Funktionen updateDataPoints() und updateWeatherData() aktualisieren die Datenpunkte anhand der abgerufenen Wetterdaten. Dabei werden sowohl die Vorhersagen (forecast1 und forecast2) als auch die Tagesdaten aktualisiert.
 - Der Code enthält eine Funktion updateCurrentObservations(), die die aktuellen Messdaten aus einer CSV-Datei aktualisiert, sofern eine Stationskennung angegeben ist. Hierbei werden die stündlichen Messdaten aus der CSV-Datei extrahiert und in entsprechende Datenpunkte geschrieben.
