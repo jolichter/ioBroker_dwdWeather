@@ -2,7 +2,8 @@
 
 ## DWD Wettervorhersage und stündliche Messdaten für [ioBroker](https://github.com/ioBroker)
 
-#### Dieser JavaScript lädt die Wetterdaten vom deutschen Wetterdienst über JSON- bzw. CSV-Links.
+#### HINWEIS: Dieses Projekt ist ein privates Open-Source-Projekt und steht in keiner Verbindung zum Deutschen Wetterdienst ([Copyright](https://www.dwd.de/DE/service/copyright/copyright_node.html)).
+#### Das JavaScript lädt öffentliche Wetterdaten vom deutschen Wetterdienst über JSON- bzw. CSV-Links.
 
 ![DWD-Logo](https://github.com/jolichter/ioBroker_dwdWeather/assets/1485851/298f1285-aee6-4f08-97b7-d5a3865177ae)
 
