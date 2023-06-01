@@ -1,8 +1,10 @@
 /*
-V 23.05.012a Beta
+V 23.05.013 Beta
 
 Verwende die API des Deutschen Wetterdienstes, um eine 10-Tage-Vorhersage aus der DWD-App (JSON-Daten)
 und POI um stündliche Messdaten ausgewählter DWD-Wetterstationen (CSV-Daten) für ioBroker zu erhalten!
+
+HINWEIS: Dieses Projekt ist ein privates Open-Source-Projekt und steht in keiner Verbindung zum Deutschen Wetterdienst.
 
 Der folgende JavaScript-Code ermöglicht den regelmäßigen Abruf von Wetterdaten, die Erstellung oder Aktualisierung
 entsprechender Datenpunkte und die Überwachung von Wertänderungen, um aktuelle und präzise Wetterinformationen
@@ -13,7 +15,7 @@ Datenpunkte werden aktualisiert, wenn sich die Werte tatsächlich geändert habe
 
 Für die API-Dokumentation und das Schema empfehle ich einen Besuch der folgenden Website: https://dwd.api.bund.dev/
 Mithilfe des Parameters "stationIDs" (Stationskennung des DWD) können die Wettervorhersagen als JSON-Datensatz angefordert
-werden. Eine Liste der DWD-Stationskennungen findet man im MOSMIX-Stationskatalog unter:
+werden. Eine Liste der DWD-Stationskennungen befindet sich im MOSMIX-Stationskatalog unter:
 https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/mosmix_stationskatalog.cfg
 
 Beispielsweise hat Bitburg die Stationskennung 'N7075', und JSON-Daten können
@@ -253,7 +255,7 @@ async function updateWeatherData() {
 // Mit der Funktion updateCurrentObservations werden die Werte aus Zeile 4 der CSV-Datei in Datenpunkte geschrieben.
 // In Spalte A befindet sich das Datum (DD.MM.YY) und in Spalte B die Uhrzeit (HH:MM), die nur aus Zeile 4 extrahiert werden.
 // Der Datenpunkt "DateTime" wird aus den Werten in Zeile 4, Spalte A und B erstellt und im ISO-Format (YYYY-MM-DD HH:MM) formatiert.
-// Der Code überprüft, ob ein Wert in Zeile 4 den Wert "---" hat. Wenn ja, wird eine Schleife gestartet, um in den folgenden Zeilen der gleichen Spalte nach dem ersten Wert zu suchen.
+// Der Code überprüft, ob ein Wert in Zeile 4 den Wert missingValue hat. Wenn ja, wird eine Schleife gestartet, um in den folgenden Zeilen der gleichen Spalte nach dem ersten Wert zu suchen.
 // Der erste gefundene Wert wird dann in den entsprechenden Datenpunkt eingetragen und die Suche in der Spalte wird beendet.
 // Für jede Station im Array stationIdentifiers wird ein Alias erstellt und für die Erstellung der Datenpunkte verwendet (Datenpunktname mag keine Sonderzeichen).
 
@@ -287,14 +289,9 @@ async function updateCurrentObservations() {
             const dateTimeValue = formatDateToISO(dateValue, timeValue);
             const localDateTimeValue = formatUTCtoLocal(dateTimeValue);
 
-            const currentDataPath = `${dpBase}.${stationIdentifierAlias}.CurrentData`;
-            await createStateIfNotExists(currentDataPath, {
-                name: "Aktuelle Messdaten",
-                type: "channel",
-                common: {}
-            });
+            const stationPath = `${dpBase}.${stationIdentifierAlias}`;
 
-            const localDateTimePath = `${currentDataPath}.LocalDateTime`;
+            const localDateTimePath = `${stationPath}.LocalDateTime`;
             await createStateIfNotExists(localDateTimePath, {
                 name: "Datum und Uhrzeit (Lokal)",
                 type: "string",
@@ -302,22 +299,8 @@ async function updateCurrentObservations() {
                 read: true,
                 write: false
             });
-
-            let localDateTimeDataPointPath = `${currentDataPath}.LocalDateTime`;
-            localDateTimeDataPointPath = localDateTimeDataPointPath.replace(/[-,(,)]/g, "");
-
-            if (enableLogs) log(`Updating data point ${localDateTimeDataPointPath} with value ${localDateTimeValue}`);
-            await createStateIfNotExists(localDateTimeDataPointPath, {
-                name: "Datum und Uhrzeit (Lokal)",
-                type: "state",
-                role: "value",
-                common: {
-                    type: "string",
-                    read: true,
-                    write: false
-                }
-            });
-            await setStateIfChanged(localDateTimeDataPointPath, localDateTimeValue);
+            if (enableLogs) log(`Updating data point ${localDateTimePath} with value ${localDateTimeValue}`);
+            await setStateIfChanged(localDateTimePath, localDateTimeValue);
 
             for (let i = 2; i < values.length; i++) {
                 const fieldName = fieldNames[i].trim();
@@ -335,8 +318,9 @@ async function updateCurrentObservations() {
                     }
                 }
 
-                let dataPointPath = `${currentDataPath}.${fieldName}`;
-                dataPointPath = dataPointPath.replace(/[-,(,)]/g, "");
+                let dataPointPath = `${stationPath}.${fieldName}`;
+                // Leerzeichen durch einen Unterstrich (_) ersetzen, Sonderzeichen entfernen und Punkte (.) beibehalten
+                dataPointPath = dataPointPath.replace(/\s/g, "_").replace(/[^A-Za-z0-9._]/g, "");
 
                 if (enableLogs) log(`Updating data point ${dataPointPath} with value ${value}`);
                 await createStateIfNotExists(dataPointPath, {
@@ -367,8 +351,11 @@ async function updateCurrentObservations() {
 })();
 
 
-// Update alle 60 Minuten aus, beginnend 1 Minute nach jeder vollen Stunde, die Ausführung erfolgt zu den Minuten 1, 61, 121 usw.
-schedule('1 0 * * * *', updateWeatherData);
+// Eventuell den Zeitplan nach Bedarf anpassen
 
-// Update alle 60 Minuten aus, beginnend 2 Minuten nach jeder vollen Stunde, die Ausführung erfolgt zu den Minuten 2, 62, 122 usw.
-schedule('2 0 * * * *', updateCurrentObservations);
+// Mit diesem Zeitplan wird die Funktion stündlich gestartet, beginnend 5 Minuten nach jeder vollen Stunde.
+schedule('5 0 * * * *', updateWeatherData);
+
+// Mit diesem Zeitplan wird die Funktion stündlich gestartet, beginnend 50 Minuten nach jeder vollen Stunde.
+// genaue Minuten siehe https://opendata.dwd.de/weather/weather_reports/poi/
+schedule('50 0 * * * *', updateCurrentObservations);
