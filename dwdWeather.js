@@ -1,5 +1,5 @@
 /*
-V 23.05.012 Beta
+V 23.05.012a Beta
 
 Verwende die API des Deutschen Wetterdienstes, um eine 10-Tage-Vorhersage aus der DWD-App (JSON-Daten)
 und POI um stündliche Messdaten ausgewählter DWD-Wetterstationen (CSV-Daten) für ioBroker zu erhalten!
@@ -12,8 +12,8 @@ Datenpunkte werden aktualisiert, wenn sich die Werte tatsächlich geändert habe
 --- API ---
 
 Für die API-Dokumentation und das Schema empfehle ich einen Besuch der folgenden Website: https://dwd.api.bund.dev/
-Mithilfe des Parameters "stationIDs" (Stationskennung des DWD) können die Wetterdaten ausgewählter Wetterstationen als
-JSON-Datensatz angefordert werden. Eine Liste der DWD-Stationskennungen findet man im MOSMIX-Stationskatalog unter:
+Mithilfe des Parameters "stationIDs" (Stationskennung des DWD) können die Wettervorhersagen als JSON-Datensatz angefordert
+werden. Eine Liste der DWD-Stationskennungen findet man im MOSMIX-Stationskatalog unter:
 https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/mosmix_stationskatalog.cfg
 
 Beispielsweise hat Bitburg die Stationskennung 'N7075', und JSON-Daten können
@@ -32,9 +32,9 @@ In der Nähe von Bitburg konnte ich die Station Olsdorf (ID 1964) finden. Laut M
 hat Olsdorf die ID K419. Es ist nicht notwendig, die verschiedenen IDs und Kennungen zu verstehen,
 man muss nur wissen, wo sie zu finden sind ;-)
 
-Unter https://opendata.dwd.de/weather/weather_reports/poi/ könnt ihr dann beispielsweise nach der Datei
-K419 suchen und die Datei 'K419_-BEOB.csv' finden. Der Parameter "stationIdentifiers" ist in diesem
-Fall also 'K419_-BEOB' (ohne Extension '.csv'). Zur Überprüfung könnt ihr die CSV-Datei über den folgenden Link aufrufen:
+Unter https://opendata.dwd.de/weather/weather_reports/poi/ könnt ihr dann beispielsweise nach K419 suchen
+und die passende Datei 'K419_-BEOB.csv' dazu finden. Der Parameter "stationIdentifiers" ist in diesem Fall also
+'K419_-BEOB' (ohne Extension '.csv'). Zur Überprüfung könnt ihr die CSV-Datei über den folgenden Link aufrufen:
 https://opendata.dwd.de/weather/weather_reports/poi/K419_-BEOB.csv
 
 */
