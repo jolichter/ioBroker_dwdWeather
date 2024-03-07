@@ -1,5 +1,5 @@
 /*
-V 23.05.013 Beta
+V 24.03.015 Beta
 
 Verwende die API des Deutschen Wetterdienstes, um eine 10-Tage-Vorhersage aus der DWD-App (JSON-Daten)
 und POI um stündliche Messdaten ausgewählter DWD-Wetterstationen (CSV-Daten) für ioBroker zu erhalten!
@@ -48,7 +48,7 @@ const enableLogs = false;
 // Du kannst beliebig viele Station-IDs hinzufügen, getrennt durch Kommas
 // Beispiel IDs für Bitburg, Trier und Koeln/Bonn: ['N7075', '10609', '10513']
 // deaktivieren mit: const stationIds = [];
-// Ungenutzten Datenpunkte können manuell über die ioBroker-Admin-Oberfläche gelöscht werden
+// Ungenutzte Datenpunkte können manuell über die ioBroker-Admin-Oberfläche gelöscht werden
 const stationIds = ['N7075'];
 
 // Optionen zum Steuern der forecast1- und forecast2-Updates
@@ -104,6 +104,15 @@ async function setStateIfChanged(stateId, value) {
     } catch (error) {
         if (enableLogs) log('Fehler in setStateIfChanged bei Datenpunkt ' + stateId + ': ' + error, 'error');
     }
+}
+
+// Funktion zum Ersetzen von Komma durch Punkt in Zahlen-Strings
+// Diese Lösung funktioniert nur, solange sichergestellt ist, dass Kommas ausschließlich als Dezimaltrennzeichen in den Zahlenwerten fungieren, nicht jedoch als Tausendertrennzeichen
+function replaceCommaWithDot(value) {
+    if (typeof value === 'string' && value.includes(',')) {
+        return value.replace(',', '.');
+    }
+    return value;
 }
 
 // Funktion zum Konvertieren von Linux-Zeitformat in ISO-Datum
@@ -317,6 +326,9 @@ async function updateCurrentObservations() {
                         }
                     }
                 }
+
+                // Kommas durch Punkte zu ersetzen (Update V 24.03.015 Beta)
+                value = replaceCommaWithDot(value);
 
                 let dataPointPath = `${stationPath}.${fieldName}`;
                 // Leerzeichen durch einen Unterstrich (_) ersetzen, Sonderzeichen entfernen und Punkte (.) beibehalten
