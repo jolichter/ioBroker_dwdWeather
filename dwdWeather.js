@@ -1,5 +1,6 @@
 /*
 V 24.03.015 Beta
+Quelle: https://github.com/jolichter/ioBroker_dwdWeather
 
 Verwende die API des Deutschen Wetterdienstes, um eine 10-Tage-Vorhersage aus der DWD-App (JSON-Daten)
 und POI um stündliche Messdaten ausgewählter DWD-Wetterstationen (CSV-Daten) für ioBroker zu erhalten!
